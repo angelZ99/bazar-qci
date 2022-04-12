@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  userCode Int @id @unique
+  firstName String
+  lastName String
+  email String @unique
+  password String
+  verified Boolean @default(false)
+  //Reports Relationship
+  //# reports Reports[]
+  //Comments Relationship
+  //# comments Comments[]
+  //Favorities Relationship
+  //# favorities Favorites[]
+}
+
+model Category {
+  id Int @id @unique @default(autoincrement())
+  name String @unique
+  icon String
+  //Products Relationship
+  products Products[]
+}
+
+model Vendors {
+  vendorCode Int @id @unique
+  firstName String
+  lastName String
+  email String @unique
+  phoneNumber Int @unique
+  password String
+  verified Boolean @default(false)
+  //Reports Relationship
+  //# reports Reports[]
+  //Products Relationship
+  products Products[]
+}
+
+model Products {
+  id Int @id @unique @default(autoincrement())
+  name String
+  price Float
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean @default(false)
+  //Product to Category Relationship
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  //Product to Vendors Relationship
+  vendor Vendors @relation(fields: [vendorCode], references: [vendorCode])
+  vendorCode Int
+  //Images Relationship
+  images Images[]
+  //Comments Relationship
+  //# comments Comments[]
+  //reports Relationship
+  //# reports Reports[]
+}
+
+model Images {
+  id Int @id @unique @default(autoincrement())
+  url String
+  //Product to Images Relationship
+  product Products @relation(fields: [productId], references: [id])
+  productId Int
+}

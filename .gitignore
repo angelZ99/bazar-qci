@@ -27,9 +27,17 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
+
+# Data
+/data/*.js
+
+# prisma
+prisma/migrations/
+prisma/*.js
