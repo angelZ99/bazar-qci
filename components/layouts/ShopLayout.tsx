@@ -31,7 +31,7 @@ export const ShopLayout: FC<Props> = ({
 				<Navbar />
 			</div>
 
-			<main>{children}</main>
+			<main className='container m-auto px-[30px] mb-[100px]'>{children}</main>
 		</>
 	);
 };

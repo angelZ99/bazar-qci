@@ -17,12 +17,13 @@ model Users {
   email String @unique
   password String
   verified Boolean @default(false)
-  //Reports Relationship
-  //# reports Reports[]
+  role String @default("user")
   //Comments Relationship
-  //# comments Comments[]
+  comments Comments[]
+  //Reports Relationship
+  reports Reports[]
   //Favorities Relationship
-  //# favorities Favorites[]
+  favorities Favorities[]
 }
 
 model Category {
@@ -41,10 +42,11 @@ model Vendors {
   phoneNumber Int @unique
   password String
   verified Boolean @default(false)
-  //Reports Relationship
-  //# reports Reports[]
+  role String @default("vendor")
   //Products Relationship
   products Products[]
+  // Rating Relationship
+  rating Float @default(0)
 }
 
 model Products {
@@ -53,7 +55,7 @@ model Products {
   price Float
   description String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
   published Boolean @default(false)
   //Product to Category Relationship
   category Category @relation(fields: [categoryId], references: [id])
@@ -64,9 +66,23 @@ model Products {
   //Images Relationship
   images Images[]
   //Comments Relationship
-  //# comments Comments[]
+  comments Comments[]
+  // Rating Relationship
+  rating RatingProduct?
   //reports Relationship
-  //# reports Reports[]
+  reports Reports[]
+  //Favorities Relationship
+  favorities Favorities[]
+}
+
+model Admin {
+  id Int @id @unique @default(autoincrement())
+  firstName String
+  lastName String
+  email String @unique
+  password String
+  verified Boolean @default(false)
+  role String @default("admin")
 }
 
 model Images {
@@ -75,4 +91,55 @@ model Images {
   //Product to Images Relationship
   product Products @relation(fields: [productId], references: [id])
   productId Int
+}
+
+model Comments {
+  id Int @id @unique @default(autoincrement())
+  comment String
+  reting Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  //Product to Comments Relationship
+  product Products @relation(fields: [productId], references: [id])
+  productId Int
+  //User to Comments Relationship
+  user Users @relation(fields: [userCode], references: [userCode])
+  userCode Int
+  // RatingProduct to Product Relationship
+  ratingProduct RatingProduct @relation(fields: [ratingId], references: [id])
+  ratingId Int
+}
+
+model RatingProduct {
+  id Int @id @unique @default(autoincrement())
+  rating Float @default(0)
+  //Product to ratingProduct Relationship
+  product Products @relation(fields: [productId], references: [id])
+  productId Int
+  //Comments Relationship
+  comments Comments[]
+}
+
+model Favorities {
+  id Int @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
+  //Product to Favorities Relationship
+  product Products @relation(fields: [productId], references: [id])
+  productId Int
+  //User to Favorities Relationship
+  user Users @relation(fields: [userCode], references: [userCode])
+  userCode Int
+}
+
+model Reports {
+  id Int @id @unique @default(autoincrement())
+  title String
+  description String
+  createdAt DateTime @default(now())
+  //Product to Reports Relationship
+  product Products @relation(fields: [productId], references: [id])
+  productId Int
+  //User to Reports Relationship
+  user Users @relation(fields: [userCode], references: [userCode])
+  userCode Int
 }

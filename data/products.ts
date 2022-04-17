@@ -26,15 +26,15 @@ export const products = [
 	{
 		name: 'Chocolates Kettle',
 		price: 15,
-		description: 'Deliciosas Jericallas hechas al horno.',
+		description: '50grs de chocolates Kettle.',
 		categoryId: 2,
 		vendorCode: 219296289,
 		published: true
 	},
 	{
-		name: 'Jericallas',
-		price: 15,
-		description: 'Deliciosas Jericallas hechas al horno.',
+		name: 'Gomitas de osito',
+		price: 12,
+		description: '65 grs de Gomitas de osito.',
 		categoryId: 2,
 		vendorCode: 219296289,
 		published: false
