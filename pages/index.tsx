@@ -1,9 +1,10 @@
 import { GetStaticProps, NextPage } from 'next';
-import { Category, Products, Vendors } from '@prisma/client';
-import superjson from 'superjson';
+
 import prisma from '../lib/prisma';
+import superjson from 'superjson';
 import { ShopLayout } from '../components/layouts';
 import { CategoryList } from '../components/products';
+import { Category, Products, Vendors } from '@prisma/client';
 
 interface Props {
 	categories: Category[];

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ShopLayout } from '../../components/layouts';
-import { AlertMessage } from '../../components/ui/';
 import { AuthContext } from '../../context';
+import { showToast } from '../../lib/notifications';
 import {
 	validateEmail,
 	validatePassword,
@@ -19,10 +19,6 @@ interface DataForm {
 	password: string;
 	password2: string;
 }
-interface Message {
-	type: string;
-	message: string;
-}
 
 const SignUpPage = () => {
 	const router = useRouter();
@@ -35,18 +31,20 @@ const SignUpPage = () => {
 		password: '',
 		password2: ''
 	});
-	const [message, setMessage] = useState<Message>({ type: '', message: '' });
 
-	useEffect(() => {
-		if (message.type !== '') {
-			setTimeout(() => {
-				setMessage({ type: '', message: '' });
-			}, 3000);
-		}
-	}, [message]);
+	const { isAuthenticated } = useContext(AuthContext);
+	if (isAuthenticated) {
+		router.push('/');
+	}
 
 	const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		const { userCode, firstName, lastName, email, password, password2 } = data;
+		const { userCode, firstName, lastName, email, password } = data;
+
+		const { isAuthenticated } = useContext(AuthContext);
+		if (isAuthenticated) {
+			router.push('/');
+		}
+
 		e.preventDefault();
 		if (validations()) {
 			const isValidRegister = await registerUser(
@@ -57,38 +55,36 @@ const SignUpPage = () => {
 				password
 			);
 			if (!isValidRegister) {
+				showToast('error', 'El correo o codigo ya estan registrados');
 				return;
 			}
+			showToast('success', 'Bienvenido ' + firstName);
+			setTimeout(() => {
+				router.replace('/');
+			}, 2000);
 			router.replace('/');
 		}
 	};
 
 	const validations = () => {
-		const { userCode, firstName, lastName, email, password, password2 } = data;
+		const { userCode, email, password, password2 } = data;
 		if (!validateEmail(email)) {
-			setMessage({ type: 'error', message: 'El correo no es valido' });
+			showToast('error', 'El correo no es valido');
 			return false;
 		}
 		if (!validateCode(userCode)) {
-			setMessage({
-				type: 'error',
-				message: 'El codigo de usuario no es valido'
-			});
+			showToast('error', 'El código no es valido');
 			return false;
 		}
 		if (!validatePassword(password)) {
-			setMessage({
-				type: 'error',
-				message:
-					'La contraseña no es valida, debe contener un numero,una Mayuscula y 8 caracteres'
-			});
+			showToast(
+				'error',
+				'La contraseña no es valida, debe contener un numero,una Mayuscula y 8 caracteres'
+			);
 			return false;
 		}
 		if (!comparePassword(password, password2)) {
-			setMessage({
-				type: 'error',
-				message: 'Las contraseñas no coinciden'
-			});
+			showToast('error', 'Las contraseñas no coinciden');
 			return false;
 		}
 		return true;
@@ -191,9 +187,6 @@ const SignUpPage = () => {
 							}
 						/>
 					</div>
-					{message.type !== '' && (
-						<AlertMessage type={message.type} message={message.message} />
-					)}
 					<div className='text-center'>
 						<button className='border-2 border-gray-600 rounded w-full bg-zinc-800 p-2 shadow mb-3'>
 							<span className='font-semibold text-white uppercase italic text-lg'>
@@ -202,7 +195,7 @@ const SignUpPage = () => {
 						</button>
 						<p className='text-xs font-semibold'>
 							¿Ya tienes una cuenta? <br />
-							<Link href='/account/login'>
+							<Link href='/user/login'>
 								<a className='text-blue-600'>Iniciar sesión...</a>
 							</Link>
 						</p>

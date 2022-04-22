@@ -2,6 +2,7 @@ import { Users } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IUser } from '../../../interfaces';
 import { isValidToken } from '../../../lib/jwt';
+import prisma from '../../../lib/prisma';
 
 type Data =
 	| { message: string }
@@ -31,9 +32,9 @@ const authenticate = async (
 	const { token = '' } = req.cookies;
 
 	try {
-		const { userCode, email } = await isValidToken(token);
+		const { email } = await isValidToken(token);
 
-		const user: Users | null = await prisma.users.findUnique({
+		const user: Users | null = await prisma.users.findFirst({
 			where: {
 				email: email
 			}
@@ -43,7 +44,7 @@ const authenticate = async (
 			return res.status(401).json({ message: "The user doesn't exist" });
 		}
 
-		const { firstName, lastName, verified, role } = user;
+		const { firstName, lastName, verified, userCode, role } = user;
 
 		return res.status(200).json({
 			token,

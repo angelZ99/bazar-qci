@@ -19,7 +19,7 @@ export default function handler(
 ) {
 	switch (req.method) {
 		case 'POST': {
-			return signupUser(req, res);
+			return registerUser(req, res);
 		}
 		default: {
 			res.status(405).json({ message: 'Method Not Allowed' });
@@ -27,7 +27,10 @@ export default function handler(
 	}
 }
 
-const signupUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const registerUser = async (
+	req: NextApiRequest,
+	res: NextApiResponse<Data>
+) => {
 	const {
 		firstName = '',
 		lastName = '',
@@ -84,7 +87,6 @@ const signupUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 			});
 		})
 		.catch((error) => {
-			console.error(`Error creating user: ${error.message}`);
 			return res.status(500).json({ message: 'Internal Server Error' });
 		});
 };

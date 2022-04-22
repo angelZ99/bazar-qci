@@ -1,8 +1,10 @@
-import { FC, useReducer } from 'react';
-import { IUser } from '../../interfaces';
-import { AuthContext, AuthReducer } from './';
+import { FC, useReducer, useEffect } from 'react';
+import Router from 'next/router';
+
 import Cookies from 'js-cookie';
-import { Tracing } from 'trace_events';
+
+import { AuthContext, AuthReducer } from './';
+import { IUser } from '../../interfaces';
 
 export interface AuthState {
 	isAuthenticated: boolean;
@@ -21,12 +23,41 @@ interface Props {
 export const AuthProvider: FC<Props> = ({ children }) => {
 	const [state, dispatch] = useReducer(AuthReducer, AUTH_INITIAL_STATE);
 
+	useEffect(() => {
+		checkToken();
+	}, []);
+
+	const checkToken = async () => {
+		if (!Cookies.get('token')) {
+			return;
+		}
+
+		try {
+			const data = await fetch('/api/auth/authenticate', {
+				method: 'GET',
+				credentials: 'include'
+			}).then((res) => res.json());
+
+			const { user } = data;
+			if (user) {
+				dispatch({ type: 'LOGIN', payload: user });
+			}
+		} catch (err) {
+			dispatch({ type: 'LOGOUT' });
+		}
+	};
+
 	const loginUser = async (email: string, password: string) => {
 		try {
-			const data = await fetch('/api/users/login', {
+			const data = await fetch('/api/auth/login', {
 				method: 'POST',
-				body: JSON.stringify({ mail: email, password })
+				body: JSON.stringify({ email, password })
 			}).then((res) => res.json());
+
+			if (data.token === undefined) {
+				return false;
+			}
+
 			const { token, user } = data;
 			Cookies.set('token', token);
 			dispatch({ type: 'LOGIN', payload: user });
@@ -44,7 +75,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 		password: string
 	) => {
 		try {
-			const data = await fetch('/api/users/register', {
+			const data = await fetch('/api/auth/register', {
 				method: 'POST',
 				body: JSON.stringify({
 					userCode,
@@ -67,7 +98,6 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 	};
 
 	const logoutUser = () => {
-		Cookies.remove('token');
 		dispatch({ type: 'LOGOUT' });
 	};
 

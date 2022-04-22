@@ -2,41 +2,33 @@ import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ShopLayout } from '../../components/layouts';
-import { AlertMessage } from '../../components/ui';
 import { AuthContext } from '../../context';
 import { validateEmail, validatePassword } from '../../lib/helpers';
+import { showToast } from '../../lib/notifications';
 
 interface DataForm {
 	email: string;
 	password: string;
-}
-interface Message {
-	type: string;
-	message: string;
 }
 
 const LoginPage = () => {
 	const router = useRouter();
 	const { loginUser } = useContext(AuthContext);
 	const [data, setData] = useState<DataForm>({ email: '', password: '' });
-	const [message, setMessage] = useState<Message>({ type: '', message: '' });
 
-	useEffect(() => {
-		if (message.type !== '') {
-			setTimeout(() => {
-				setMessage({ type: '', message: '' });
-			}, 3000);
-		}
-	}, [message]);
+	const { isAuthenticated } = useContext(AuthContext);
+	if (isAuthenticated) {
+		router.push('/');
+	}
 
 	const validations = () => {
 		const { email, password } = data;
 		if (!validateEmail(email)) {
-			setMessage({ type: 'error', message: 'El correo no es valido' });
+			showToast('error', 'El correo no es valido');
 			return false;
 		}
 		if (!validatePassword(password)) {
-			setMessage({ type: 'error', message: 'La contraseña no es valida' });
+			showToast('error', 'El contraseña no es valida');
 			return false;
 		}
 		return true;
@@ -49,16 +41,19 @@ const LoginPage = () => {
 		if (validations()) {
 			const isValidLogin = await loginUser(email, password);
 			if (!isValidLogin) {
+				showToast('error', 'El correo o la contraseña no son incorrectos');
 				return;
 			}
-
-			router.replace('/');
+			showToast('success', 'Bienvenido de nuevo');
+			setTimeout(() => {
+				router.replace('/');
+			}, 2000);
 		}
 	};
 
 	return (
 		<ShopLayout title='Login' pageDescription='Inicio de sesión'>
-			<div className='flex flex-col m-auto absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full md:w-2/3 lg:w-1/2 2xl:w-1/3 border border-gray-500 p-5'>
+			<div className='flex flex-col m-auto w-full md:w-2/3 lg:w-1/2 2xl:w-1/3 border border-gray-500 p-5'>
 				<h2 className='text-center text-xl font-semibold'>Inicio de Sesión</h2>
 				<form className='mt-5' onSubmit={handlerSubmit} noValidate>
 					{/* Email */}
@@ -99,14 +94,11 @@ const LoginPage = () => {
 						</button>
 						<p className='text-xs font-semibold'>
 							¿No tienes una cuenta? <br />
-							<Link href='/account/signup'>
+							<Link href='/user/signup'>
 								<a className='text-blue-600'>Registrate...</a>
 							</Link>
 						</p>
 					</div>
-					{message.type !== '' && (
-						<AlertMessage type={message.type} message={message.message} />
-					)}
 				</form>
 			</div>
 		</ShopLayout>

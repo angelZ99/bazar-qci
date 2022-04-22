@@ -27,11 +27,14 @@ export default function handler(
 }
 
 const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const { mail = '', password = '' } = JSON.parse(req.body);
+	const { email = '', password = '' } = JSON.parse(req.body) as {
+		email: string;
+		password: string;
+	};
 
 	const user: Users | null = await prisma.users.findUnique({
 		where: {
-			email: mail
+			email
 		}
 	});
 
@@ -43,7 +46,7 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 		return res.status(401).json({ message: 'Invalid Credentials - pass' });
 	}
 
-	const { firstName, lastName, email, userCode, verified, role } = user;
+	const { firstName, lastName, userCode, verified, role } = user;
 	const token = signToken(userCode, email);
 
 	return res.status(200).json({
