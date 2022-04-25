@@ -6,3 +6,7 @@ export interface IUser {
 	verified: boolean;
 	role: string;
 }
+
+export interface IAdmin {}
+
+export interface IVendor {}

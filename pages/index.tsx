@@ -22,6 +22,7 @@ const Home: NextPage<Props> = ({ categories, products, vendors }) => {
 		>
 			<CategoryList categories={categories} />
 			{
+				// TODO: Implement a list of best sellers and best vendors
 				//<BestSellers products={products} />}
 				//<BestVendors vendors={vendors} />
 			}

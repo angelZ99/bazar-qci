@@ -92,12 +92,53 @@ const LoginPage = () => {
 								Iniciar Sesión
 							</span>
 						</button>
-						<p className='text-xs font-semibold'>
+						<p className='text-xs font-semibold mb-3'>
 							¿No tienes una cuenta? <br />
 							<Link href='/user/signup'>
 								<a className='text-blue-600'>Registrate...</a>
 							</Link>
 						</p>
+					</div>
+					{/* Options Role */}
+					<div className='text-center text-xs flex flex-col'>
+						<p className='font-semibold'>¿Eres un vendedor o Administrador?</p>
+						<div className='flex w-1/2 md:w-1/4 m-auto mt-2 justify-between'>
+							<label className='mr-1' htmlFor='optVendor'>
+								Usuario
+							</label>
+							<input
+								className='mt-0.5'
+								type='radio'
+								name='optRole'
+								id='optUser'
+								value='user'
+								defaultChecked={true}
+							/>
+						</div>
+						<div className='flex w-1/2 md:w-1/4 m-auto mt-2 justify-between'>
+							<label className='mr-1' htmlFor='optVendor'>
+								Vendedor
+							</label>
+							<input
+								className='mt-0.5'
+								type='radio'
+								name='optRole'
+								id='optVendor'
+								value='vendor'
+							/>
+						</div>
+						<div className='flex w-1/2 md:w-1/4 m-auto mt-2 justify-between'>
+							<label className='mr-1' htmlFor='optAdmin'>
+								Administrador
+							</label>
+							<input
+								className='mt-0.5'
+								type='radio'
+								name='optRole'
+								id='optAdmin'
+								value='Admin'
+							/>
+						</div>
 					</div>
 				</form>
 			</div>

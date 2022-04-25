@@ -1,10 +1,9 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import { ActiveLink } from './';
 
 export const Navbar = () => {
 	return (
-		<nav className='w-full fixed bottom-0 bg-zinc-800 h-[80px]'>
+		<nav className='w-full fixed bottom-0 bg-zinc-800 h-[80px] z-10'>
 			<ul className='flex justify-between items-center h-full px-[30px] text-white'>
 				<ActiveLink path='/'>
 					<Image src='/img/home.png' width={32} height={32} alt='home-icon' />

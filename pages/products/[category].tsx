@@ -5,10 +5,10 @@ import { Products, Category } from '@prisma/client';
 import superjson from 'superjson';
 import prisma from '../../lib/prisma';
 import { ShopLayout } from '../../components/layouts';
-import { CategoryList } from '../../components/products/categories/CategoryList';
+import { CategoryList, ProductList } from '../../components/products/';
 
 interface Props {
-	products: Products;
+	products: Products[];
 	categories: Category[];
 }
 
@@ -25,6 +25,11 @@ const CategoryPage: NextPage<Props> = ({ products, categories }) => {
 				categories={categories}
 				currentCategory={category as string}
 			/>
+			<ProductList
+				categories={categories}
+				currentCategory={category as string}
+				products={products}
+			/>
 		</ShopLayout>
 	);
 };
@@ -32,12 +37,16 @@ const CategoryPage: NextPage<Props> = ({ products, categories }) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const { category, id } = ctx.query;
 
-	const products = await prisma.products.findMany();
-	const categories = await prisma.category.findMany();
+	const categories = await prisma.category.findMany({});
+	const products = await prisma.products.findMany({
+		where: {
+			categoryId: parseInt(id as string)
+		}
+	});
 
 	return {
 		props: {
-			products: superjson.serialize(products),
+			products: superjson.serialize(products).json,
 			categories
 		}
 	};
