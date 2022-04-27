@@ -91,6 +91,12 @@ const createProduct = async (
 					vendorCode
 				}
 			});
+			await prisma.ratingProduct.create({
+				data: {
+					rating: 0,
+					productId: product.id
+				}
+			});
 
 			return res.status(200).json({ product });
 		}
@@ -172,6 +178,7 @@ const deleteProduct = async (
 					id: id
 				}
 			});
+
 			if (!product) {
 				return res.status(404).json({ message: 'Product not found' });
 			} else {

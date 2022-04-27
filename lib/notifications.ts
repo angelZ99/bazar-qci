@@ -15,7 +15,12 @@ export const showToast = (type: string, message: string) => {
 	});
 };
 
-export const commentModal = (productName: string) => {
+export const commentModal = (
+	productName: string,
+	userCode: number,
+	productId: number,
+	ratingId: Number
+) => {
 	Comment.fire({
 		title: 'Caja de Comentario',
 		position: 'center',
@@ -24,7 +29,7 @@ export const commentModal = (productName: string) => {
 			'<p class="text-center text-xl mb-3">Producto: </br> <span class="font-semibold">' +
 			productName +
 			'</span></p>' +
-			'<textarea rows="4" class="w-full border-2 border-slate-500 p-2 mb-2" placeholder="Escribe aqui el comentario"></textarea>' +
+			'<textarea id="textComment" rows="4" class="w-full border-2 border-slate-500 p-2 mb-2" placeholder="Escribe aqui el comentario"></textarea>' +
 			'<h3 class="text-xl font-semibold" > Calificacion: </h3>' +
 			'<div class="rating">' +
 			'<input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>' +
@@ -37,5 +42,38 @@ export const commentModal = (productName: string) => {
 		showCancelButton: true,
 		cancelButtonText: 'Cancelar',
 		cancelButtonColor: '#d33'
-	});
+	})
+		.then(async (result) => {
+			if (result.value) {
+				const textComment = document.querySelector(
+					'#textComment'
+				) as HTMLTextAreaElement;
+				const rating = document.querySelector(
+					'input[name="rating"]:checked'
+				) as HTMLInputElement;
+				if (textComment.value === '' || rating === null) {
+					showToast(
+						'error',
+						'Datos invalidos, no se pudo enviar el comentario'
+					);
+				} else {
+					const comment = await fetch('/api/products/comments', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							comment: textComment.value,
+							rating: parseInt(rating.value),
+							ratingId,
+							userCode,
+							productId
+						})
+					});
+				}
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 };

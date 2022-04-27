@@ -6,16 +6,24 @@ import Link from 'next/link';
 import superjson from 'superjson';
 import prisma from '../../../lib/prisma';
 import { AuthContext } from '../../../context/auth/AuthContext';
-import { Products, Vendors, Favorites } from '@prisma/client';
+import { Products, Vendors, Favorites, Comments } from '@prisma/client';
 import { ShopLayout } from '../../../components/layouts';
 import { showToast, commentModal } from '../../../lib/notifications';
+import { CommentList } from '../../../components/products/comments/CommentList';
 
 interface Props {
 	product: Products;
 	vendor: Vendors;
+	comments: (Comments & {
+		user: {
+			firstName: string;
+			lastName: string;
+			userCode: number;
+		};
+	})[];
 }
 
-const IndexProductsPage: NextPage<Props> = ({ product, vendor }) => {
+const IndexProductsPage: NextPage<Props> = ({ product, vendor, comments }) => {
 	const router = useRouter();
 	const { id = 0 } = router.query;
 	const [isFavorite, setIsFavorite] = useState(false);
@@ -40,7 +48,8 @@ const IndexProductsPage: NextPage<Props> = ({ product, vendor }) => {
 	}, [user]);
 
 	const handleComment = () => {
-		commentModal(product.name);
+		/*@ts-ignore*/
+		commentModal(product.name, user?.userCode!, product.id, product.rating.id);
 	};
 
 	//* Methods to handle favorites
@@ -160,11 +169,21 @@ const IndexProductsPage: NextPage<Props> = ({ product, vendor }) => {
 					<h3 className='text-lg font-semibold'> Comentarios: </h3>
 					<button
 						className='italic text-blue-700 font-semibold'
-						onClick={handleComment}
+						onClick={
+							isAuthenticated
+								? handleComment
+								: () => {
+										router.push('/user/login');
+								  }
+						}
 					>
-						Hacer un comentario
+						{isAuthenticated
+							? 'Dejar un comentario'
+							: 'Iniciar sesión para comentar'}
 					</button>
 				</div>
+				{/***** Comments List *****/}
+				<CommentList comments={comments} />
 			</div>
 		</ShopLayout>
 	);
@@ -176,6 +195,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const product = await prisma.products.findUnique({
 		where: {
 			id: Number(id)
+		},
+		include: {
+			rating: true
 		}
 	});
 
@@ -194,10 +216,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		}
 	});
 
+	const comments = await prisma.comments.findMany({
+		where: {
+			productId: product.id
+		},
+		include: {
+			user: {
+				select: {
+					firstName: true,
+					lastName: true,
+					userCode: true
+				}
+			}
+		}
+	});
+
 	return {
 		props: {
 			product: superjson.serialize(product).json,
-			vendor: superjson.serialize(vendor).json
+			vendor: superjson.serialize(vendor).json,
+			comments: superjson.serialize(comments).json
 		}
 	};
 };

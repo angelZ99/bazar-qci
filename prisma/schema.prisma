@@ -96,7 +96,7 @@ model Images {
 model Comments {
   id Int @id @unique @default(autoincrement())
   comment String
-  reting Int
+  rating Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   //Product to Comments Relationship
