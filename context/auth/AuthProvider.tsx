@@ -101,9 +101,13 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 		dispatch({ type: 'LOGOUT' });
 	};
 
+	const updateUser = (user: IUser) => {
+		checkToken();
+	};
+
 	return (
 		<AuthContext.Provider
-			value={{ ...state, loginUser, logoutUser, registerUser }}
+			value={{ ...state, loginUser, logoutUser, registerUser, updateUser }}
 		>
 			{children}
 		</AuthContext.Provider>

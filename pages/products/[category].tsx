@@ -37,6 +37,15 @@ const CategoryPage: NextPage<Props> = ({ products, categories }) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const { category, id } = ctx.query;
 
+	if (!id) {
+		return {
+			redirect: {
+				permanent: true,
+				destination: '/404'
+			}
+		};
+	}
+
 	const categories = await prisma.category.findMany({});
 	const products = await prisma.products.findMany({
 		where: {

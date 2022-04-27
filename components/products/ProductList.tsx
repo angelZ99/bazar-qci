@@ -15,9 +15,11 @@ export const ProductList: FC<Props> = ({
 }) => {
 	return (
 		<div className='mt-5'>
-			<h3 className='text-2xl mb-3'>
-				Productos de: <span className='font-bold'> {currentCategory} </span>
-			</h3>
+			{currentCategory && (
+				<h3 className='text-2xl mb-3'>
+					Productos de: <span className='font-bold'> {currentCategory} </span>
+				</h3>
+			)}
 			<div className='flex flex-wrap gap-3'>
 				{products.map((product) => (
 					<ProductItem

@@ -4,7 +4,8 @@ import { AuthState } from '.';
 type AuthActionType =
 	| { type: 'LOGIN'; payload: IUser }
 	| { type: 'LOGOUT' }
-	| { type: 'REGISTER'; payload: IUser };
+	| { type: 'REGISTER'; payload: IUser }
+	| { type: 'UPDATEUSER'; payload: IUser };
 
 export const AuthReducer = (state: AuthState, action: AuthActionType) => {
 	switch (action.type) {
@@ -25,6 +26,10 @@ export const AuthReducer = (state: AuthState, action: AuthActionType) => {
 				...state,
 				user: action.payload,
 				isAuthenticated: true
+			};
+		case 'UPDATEUSER':
+			return {
+				...state
 			};
 		default:
 			return state;

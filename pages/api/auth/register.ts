@@ -61,7 +61,7 @@ const registerUser = async (
 		return res.status(400).json({ message: 'Invalid email ***' });
 	}
 
-	const token = signToken(userCode, email);
+	const token = signToken(userCode, email, 'user');
 
 	await prisma.users
 		.create({
@@ -82,7 +82,9 @@ const registerUser = async (
 					email: newUser.email,
 					userCode: newUser.userCode,
 					verified: newUser.verified,
-					role: newUser.role
+					role: newUser.role,
+					favorites: [],
+					comments: []
 				}
 			});
 		})

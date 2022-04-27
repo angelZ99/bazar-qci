@@ -28,7 +28,7 @@ export const HeaderVendor = () => {
 					<ActiveLink path='/products/'>
 						<Image src='/img/shop.png' width={24} height={24} alt='shop-icon' />
 					</ActiveLink>
-					<ActiveLink path='/user/favs'>
+					<ActiveLink path='/user/favorites/'>
 						<Image
 							src='/img/white-favorite.png'
 							width={24}

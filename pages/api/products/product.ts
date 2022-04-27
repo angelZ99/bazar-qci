@@ -32,14 +32,15 @@ export default function handler(
 }
 
 const getProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const { id = 0 } = req.body;
+	const { id = 0 } = req.query;
+
 	try {
 		if (id === 0) {
 			return res.status(400).json({ message: 'Invalid id' });
 		} else {
 			const product = await prisma.products.findUnique({
 				where: {
-					id: id
+					id: Number(id)
 				}
 			});
 			if (!product) {

@@ -1,5 +1,6 @@
-import { Users } from '@prisma/client';
+import { Users, Favorites, Comments } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Factory } from 'react';
 import { IUser } from '../../../interfaces';
 import { isValidToken } from '../../../lib/jwt';
 import prisma from '../../../lib/prisma';
@@ -34,9 +35,13 @@ const authenticate = async (
 	try {
 		const { email } = await isValidToken(token);
 
-		const user: Users | null = await prisma.users.findFirst({
+		const user: Users | null = await prisma.users.findUnique({
 			where: {
-				email: email
+				email
+			},
+			include: {
+				favorites: true,
+				comments: true
 			}
 		});
 
@@ -54,7 +59,11 @@ const authenticate = async (
 				email,
 				userCode,
 				verified,
-				role
+				role,
+				/*@ts-ignore*/
+				favorites: user.favorites,
+				/*@ts-ignore*/
+				comments: user.comments
 			}
 		});
 	} catch (error) {

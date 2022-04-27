@@ -1,6 +1,7 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { AuthContext } from '../../context';
 
 interface Props {
 	path: string;
@@ -9,6 +10,8 @@ interface Props {
 
 export const ActiveLink: FC<Props> = ({ children, path }) => {
 	const router = useRouter();
+
+	path.length > 2 ? (path = path.slice(0, -1)) : (path = path);
 
 	const isActive = router.pathname === path;
 

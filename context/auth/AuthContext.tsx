@@ -14,6 +14,7 @@ interface AuthContext {
 		email: string,
 		password: string
 	) => Promise<boolean>;
+	updateUser: () => void;
 }
 
 export const AuthContext = createContext({} as AuthContext);

@@ -11,7 +11,7 @@ const main = async () => {
 		await prisma.$executeRaw`TRUNCATE "Images" RESTART IDENTITY CASCADE;`;
 		await prisma.$executeRaw`TRUNCATE "Comments" RESTART IDENTITY CASCADE;`;
 		await prisma.$executeRaw`TRUNCATE "RatingProduct" RESTART IDENTITY CASCADE;`;
-		await prisma.$executeRaw`TRUNCATE "Favorities" RESTART IDENTITY CASCADE;`;
+		await prisma.$executeRaw`TRUNCATE "Favorites" RESTART IDENTITY CASCADE;`;
 		await prisma.$executeRaw`TRUNCATE "Reports" RESTART IDENTITY CASCADE;`;
 
 		await prisma.category.createMany({

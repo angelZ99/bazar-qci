@@ -22,8 +22,8 @@ model Users {
   comments Comments[]
   //Reports Relationship
   reports Reports[]
-  //Favorities Relationship
-  favorities Favorities[]
+  //Favorites Relationship
+  favorites Favorites[]
 }
 
 model Category {
@@ -71,8 +71,8 @@ model Products {
   rating RatingProduct?
   //reports Relationship
   reports Reports[]
-  //Favorities Relationship
-  favorities Favorities[]
+  //Favorites Relationship
+  favorites Favorites[]
 }
 
 model Admin {
@@ -120,13 +120,13 @@ model RatingProduct {
   comments Comments[]
 }
 
-model Favorities {
+model Favorites {
   id Int @id @unique @default(autoincrement())
   createdAt DateTime @default(now())
-  //Product to Favorities Relationship
+  //Product to Favorites Relationship
   product Products @relation(fields: [productId], references: [id])
   productId Int
-  //User to Favorities Relationship
+  //User to Favorites Relationship
   user Users @relation(fields: [userCode], references: [userCode])
   userCode Int
 }

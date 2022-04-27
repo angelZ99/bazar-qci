@@ -11,7 +11,7 @@ export const Navbar = () => {
 				<ActiveLink path='/products/'>
 					<Image src='/img/shop.png' width={32} height={32} alt='shop-icon' />
 				</ActiveLink>
-				<ActiveLink path='/user/favs'>
+				<ActiveLink path='/user/favorites/'>
 					<Image
 						src='/img/white-favorite.png'
 						width={32}

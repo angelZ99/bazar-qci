@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { compareSync } from 'bcryptjs';
-import { Users } from '@prisma/client';
+import { Users, Favorites } from '@prisma/client';
 import prisma from '../../../lib/prisma';
 import { signToken } from '../../../lib/jwt';
 import { IUser } from '../../../interfaces';
@@ -35,6 +35,10 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 	const user: Users | null = await prisma.users.findUnique({
 		where: {
 			email
+		},
+		include: {
+			favorites: true,
+			comments: true
 		}
 	});
 
@@ -47,7 +51,7 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 	}
 
 	const { firstName, lastName, userCode, verified, role } = user;
-	const token = signToken(userCode, email);
+	const token = signToken(userCode, email, role);
 
 	return res.status(200).json({
 		token,
@@ -57,7 +61,11 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 			email,
 			userCode,
 			verified,
-			role
+			role,
+			/*@ts-ignore*/
+			favorites: user.favorites,
+			/*@ts-ignore*/
+			comments: user.comments
 		}
 	});
 };

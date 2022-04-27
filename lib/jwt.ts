@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export const signToken = (userCode: number, email: string) => {
+export const signToken = (userCode: number, email: string, role: string) => {
 	if (!process.env.JWT_SECRET_KEY) {
 		throw new Error(
 			'JWT_SECRET is not defined - define the environment variable for the jwt'
@@ -9,7 +9,7 @@ export const signToken = (userCode: number, email: string) => {
 
 	return jwt.sign(
 		//payload
-		{ userCode, email },
+		{ userCode, email, role },
 		//Private key
 		process.env.JWT_SECRET_KEY,
 		//options
@@ -20,6 +20,7 @@ export const signToken = (userCode: number, email: string) => {
 interface dataToken {
 	userCode: number;
 	email: string;
+	role: string;
 }
 
 export const isValidToken = (token: string): Promise<dataToken> => {
@@ -34,12 +35,13 @@ export const isValidToken = (token: string): Promise<dataToken> => {
 			jwt.verify(token, process.env.JWT_SECRET_KEY || '', (err, payload) => {
 				if (err) return reject('Invalid token');
 
-				const { userCode, email } = payload as {
+				const { userCode, email, role } = payload as {
 					userCode: number;
 					email: string;
+					role: string;
 				};
 
-				resolve({ userCode, email });
+				resolve({ userCode, email, role });
 			});
 		} catch (error) {
 			return reject('Invalid token');
