@@ -6,10 +6,10 @@ import { AuthContext } from '../../context';
 import { ActiveLink } from '.';
 
 export const Header = () => {
-	const { isAuthenticated, user } = useContext(AuthContext);
+	const { isAuthenticated, user, logoutUser } = useContext(AuthContext);
 
 	return (
-		<header className='w-full flex md:justify-evenly justify-between items-end m-auto bg-zinc-800 h-[80px] px-[30px] pb-5 mb-5'>
+		<header className='w-full flex md:justify-evenly justify-between items-end m-auto bg-zinc-800 h-[80px] px-[30px] pb-3 mb-5'>
 			<div>
 				<Link href='/' passHref>
 					<a className='flex'>
@@ -39,7 +39,7 @@ export const Header = () => {
 				</ul>
 			</nav>
 			<div className='text-center'>
-				<Link href={'/user/login'} passHref>
+				<Link href={!isAuthenticated ? '/user/login' : '/'} passHref>
 					<a>
 						<Image
 							src={'/img/white-user.png'}
@@ -48,7 +48,21 @@ export const Header = () => {
 							height={16}
 						/>
 						<p className='text-white text-xs'>
-							{isAuthenticated ? `Hola ${user!.firstName}` : 'Iniciar sesión'}
+							{isAuthenticated ? (
+								<div>
+									<p className='text-yellow-200'>
+										Bienvenido {user?.firstName}
+									</p>
+									<button
+										className='underline underline-offset-1'
+										onClick={logoutUser}
+									>
+										Cerrar sesion
+									</button>
+								</div>
+							) : (
+								'Iniciar sesión'
+							)}
 						</p>
 					</a>
 				</Link>

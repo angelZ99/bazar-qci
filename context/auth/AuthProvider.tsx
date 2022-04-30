@@ -98,10 +98,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 	};
 
 	const logoutUser = () => {
+		Cookies.remove('token');
 		dispatch({ type: 'LOGOUT' });
 	};
 
-	const updateUser = (user: IUser) => {
+	const updateUser = () => {
 		checkToken();
 	};
 
