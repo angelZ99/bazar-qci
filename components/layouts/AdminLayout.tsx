@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { FC } from 'react';
-import { HeaderVendor } from '../ui';
 
 interface Props {
 	title: string;
@@ -9,7 +8,7 @@ interface Props {
 	children?: JSX.Element | JSX.Element[];
 }
 
-export const VendorLayout: FC<Props> = ({
+export const AdminLayout: FC<Props> = ({
 	title,
 	pageDescription,
 	imageFullUrl,
@@ -25,8 +24,6 @@ export const VendorLayout: FC<Props> = ({
 				<meta property='og:description' content={pageDescription} />
 				{imageFullUrl && <meta property='og:image' content={imageFullUrl} />}
 			</Head>
-
-			<HeaderVendor />
 
 			<main className='container m-auto px-[30px]'>{children}</main>
 		</>

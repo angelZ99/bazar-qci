@@ -18,10 +18,8 @@ const Home: NextPage<Props> = ({ categories, products }) => {
 
 	return (
 		<ShopLayout
-			title={'Inicio'}
-			pageDescription={
-				'Encuentra lo que busques dentro de tu centro universitario'
-			}
+			title={'favoritos'}
+			pageDescription={'Lista de productos favoritos'}
 		>
 			{!isAuthenticated ? (
 				<h2 className='m-auto text-center text-4xl w-3/4 mt-10 border rounded bg-zinc-800 p-5 text-white'>

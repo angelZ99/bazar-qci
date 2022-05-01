@@ -1,7 +1,6 @@
 import { FC, useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { AuthContext } from '../../context';
 
 interface Props {
 	path: string;

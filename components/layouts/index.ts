@@ -1,2 +1,2 @@
 export * from './ShopLayout';
-export * from './VendorLayout';
+export * from './AdminLayout';

@@ -12,7 +12,7 @@ export const Header = () => {
 		<header className='w-full flex md:justify-evenly justify-between items-end m-auto bg-zinc-800 h-[80px] px-[30px] pb-3 mb-5'>
 			<div>
 				<Link href='/' passHref>
-					<a className='flex'>
+					<a className='flex pb-2'>
 						<SchoolIcon width={32} height={32} />
 						<h1 className='text-white text-3xl hover:cursor-pointer'>
 							BazarQci
@@ -47,9 +47,9 @@ export const Header = () => {
 							width={16}
 							height={16}
 						/>
-						<p className='text-white text-xs'>
+						<div className='text-white text-xs'>
 							{isAuthenticated ? (
-								<div>
+								<>
 									<p className='text-yellow-200'>
 										Bienvenido {user?.firstName}
 									</p>
@@ -59,11 +59,11 @@ export const Header = () => {
 									>
 										Cerrar sesion
 									</button>
-								</div>
+								</>
 							) : (
 								'Iniciar sesión'
 							)}
-						</p>
+						</div>
 					</a>
 				</Link>
 			</div>

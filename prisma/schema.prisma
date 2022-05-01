@@ -39,7 +39,7 @@ model Vendors {
   firstName String
   lastName String
   email String @unique
-  phoneNumber Int @unique
+  phoneNumber BigInt @unique
   password String
   verified Boolean @default(false)
   role String @default("vendor")

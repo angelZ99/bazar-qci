@@ -16,7 +16,7 @@ export const CommentList: FC<Props> = ({ comments }) => {
 	return (
 		<div className='mt-5'>
 			{comments.length > 0 ? (
-				<div className='flex w-full m-auto'>
+				<div className='flex flex-col w-full m-auto gap-5'>
 					{comments.map((comment) => (
 						<CommentItem key={comment.id} comment={comment} />
 					))}

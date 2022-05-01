@@ -19,7 +19,7 @@ const IndexProductsPage: NextPage<Props> = ({ products, categories }) => {
 	return (
 		<ShopLayout
 			title='Productos'
-			pageDescription='Listado de productos por categoria'
+			pageDescription='Listado de productos mas comprados'
 		>
 			<CategoryList
 				categories={categories}

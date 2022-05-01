@@ -91,7 +91,7 @@ const SignUpPage = () => {
 	};
 
 	return (
-		<ShopLayout title='Login' pageDescription=''>
+		<ShopLayout title='Registro' pageDescription='Registro de usuario'>
 			<div className='flex flex-col m-auto w-full md:w-2/3 lg:w-1/2 2xl:w-1/3 border border-gray-500 p-5'>
 				<h2 className='text-center text-xl font-semibold'>
 					Registro de Usuario

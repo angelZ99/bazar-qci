@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
-import { Comments } from '@prisma/client';
+import { Comments, RatingProduct } from '@prisma/client';
 
 type Data =
 	| { message: string }
@@ -68,6 +68,7 @@ const addComment = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 						productId
 					}
 				});
+				updateRating(productId);
 				res.status(200).json({ comment: newComment });
 			}
 		} else {
@@ -82,7 +83,16 @@ const updateComment = async (
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) => {
-	const { userCode, productId } = req.body as {
+	const {
+		comment = '',
+		rating = 0,
+		ratingId = 0,
+		userCode = 0,
+		productId = 0
+	} = req.body as {
+		comment: string;
+		rating: number;
+		ratingId: number;
 		userCode: number;
 		productId: number;
 	};
@@ -112,6 +122,7 @@ const deleteComment = async (
 					id: comment.id
 				}
 			});
+			updateRating(productId);
 			return res.status(200).json({ message: 'Comment deleted' });
 		} else {
 			return res.status(400).json({ message: 'Comment not found' });
@@ -119,4 +130,24 @@ const deleteComment = async (
 	} catch (error) {
 		return res.status(500).json({ message: 'Internal Server Error' });
 	}
+};
+
+const updateRating = async (productId: number) => {
+	const allRating = await prisma.comments.findMany({
+		where: {
+			productId
+		},
+		select: {
+			rating: true
+		}
+	});
+	const rating = allRating.reduce((acc, cur) => acc + cur.rating, 0);
+	await prisma.ratingProduct.update({
+		where: {
+			productId
+		},
+		data: {
+			rating: rating / allRating.length
+		}
+	});
 };

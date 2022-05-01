@@ -6,7 +6,7 @@ import Link from 'next/link';
 import superjson from 'superjson';
 import prisma from '../../../lib/prisma';
 import { AuthContext } from '../../../context/auth/AuthContext';
-import { Products, Vendors, Favorites, Comments } from '@prisma/client';
+import { Products, Vendors, Comments, RatingProduct } from '@prisma/client';
 import { ShopLayout } from '../../../components/layouts';
 import { showToast, commentModal } from '../../../lib/notifications';
 import { CommentList } from '../../../components/products/comments/CommentList';
@@ -21,9 +21,15 @@ interface Props {
 			userCode: number;
 		};
 	})[];
+	rating: RatingProduct;
 }
 
-const IndexProductsPage: NextPage<Props> = ({ product, vendor, comments }) => {
+const IndexProductsPage: NextPage<Props> = ({
+	product,
+	vendor,
+	comments,
+	rating
+}) => {
 	const router = useRouter();
 	const { id = 0 } = router.query;
 	const [isFavorite, setIsFavorite] = useState(false);
@@ -125,14 +131,23 @@ const IndexProductsPage: NextPage<Props> = ({ product, vendor, comments }) => {
 								<span className='font-semibold'> {product.price} </span>
 							</div>
 							{/* Rating */}
-							<div>
+							<div className='flex flex-wrap'>
 								Calificacion:
-								<span className='font-semibold'> -- </span>
+								<span className='font-semibold'>
+									{rating.rating} ( {comments.length !== 1 && comments.length}
+									{comments.length === 1 ? 'una opinión' : ' Opiniones'} )
+								</span>
 							</div>
 							{/* Vendor */}
 							<div>
 								Vendedor: <br />
-								<Link href='/'>
+								<Link
+									href={{
+										pathname: '/vendor/[id]',
+										query: { id: vendor.vendorCode }
+									}}
+									passHref
+								>
 									<span className='flex justify-center text-blue-700 italic font-semibold'>
 										{vendor.firstName} {vendor.lastName}
 									</span>
@@ -231,11 +246,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		}
 	});
 
+	const rating = await prisma.ratingProduct.findFirst({
+		where: {
+			productId: Number(id)
+		}
+	});
+
 	return {
 		props: {
 			product: superjson.serialize(product).json,
 			vendor: superjson.serialize(vendor).json,
-			comments: superjson.serialize(comments).json
+			comments: superjson.serialize(comments).json,
+			rating: superjson.serialize(rating).json
 		}
 	};
 };
