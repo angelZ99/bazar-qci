@@ -11,15 +11,12 @@ export interface IUser {
 	comments: Comments[] | null;
 }
 
-export interface IAdmin {}
-
-export interface IVendor {
-	vendorCode: number;
+export interface IAdmin {
 	firstName: string;
 	lastName: string;
 	email: string;
-	phoneNumber: number;
-	rating: number;
-	verified: boolean;
 	role: string;
+	vendorCode?: number;
+	phoneNumber?: string;
+	rating?: number;
 }

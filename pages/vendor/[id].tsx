@@ -13,7 +13,6 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ products, vendor, categories }) => {
-	console.log(products);
 	return (
 		<ShopLayout
 			title={'Inicio'}

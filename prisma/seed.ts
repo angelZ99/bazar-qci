@@ -30,8 +30,6 @@ const main = async () => {
 			data: products,
 			skipDuplicates: true
 		});
-
-		console.log('Seeding success!');
 	} catch (error) {
 		console.error({
 			type: 'Error',

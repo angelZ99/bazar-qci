@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { showToast } from '../../../lib/notifications';
 import { validateEmail, validatePassword } from '../../../lib/helpers';
-import { LoginAdmin } from '../admin/login';
+import { IAdmin } from '../../../interfaces';
 
 interface DataForm {
 	email: string;
 	password: string;
+	role: string;
+}
+interface Props {
+	setToRegister: (value: boolean) => void;
 }
 
-export const LoginVendor = () => {
+export const LoginVendor: FC<Props> = ({ setToRegister }) => {
 	const router = useRouter();
-	const [data, setData] = useState<DataForm>({ email: '', password: '' });
+	const [data, setData] = useState<DataForm>({
+		email: '',
+		password: '',
+		role: 'vendor'
+	});
 
 	const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { email, password } = data;
+		const { email, password, role } = data;
 
 		const validations = () => {
 			const { email, password } = data;
@@ -32,16 +40,30 @@ export const LoginVendor = () => {
 		};
 
 		if (validations()) {
-			const isValidLogin = await LoginVendor(email, password);
+			const { isValidLogin, admin } = (await login(email, password, role)) as {
+				isValidLogin: boolean;
+				admin: IAdmin;
+			};
 			if (!isValidLogin) {
 				showToast('error', 'El correo o la contraseña no son incorrectos');
 				return;
 			}
-			showToast('success', 'Bienvenido de nuevo');
-			setTimeout(() => {
-				router.replace('/');
-			}, 2000);
+			showToast('success', 'Bienvenido');
+			window.localStorage.setItem('admin', JSON.stringify(admin));
+			router.push('/managment/vendors');
 		}
+	};
+
+	const login = async (email: string, password: string, role: string) => {
+		return await fetch(`api/auth/adminAuth`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ email, password, role })
+		})
+			.then((res) => res.json())
+			.catch((err) => showToast('error', 'Error en el servidor'));
 	};
 
 	return (
@@ -86,9 +108,14 @@ export const LoginVendor = () => {
 					</button>
 					<p className='text-xs font-semibold mb-3'>
 						¿No tienes una cuenta? <br />
-						<Link href='/user/signup'>
-							<a className='text-blue-600'>Registrate...</a>
-						</Link>
+						<a
+							className='text-blue-600'
+							onClick={() => {
+								setToRegister(true);
+							}}
+						>
+							Registrate...
+						</a>
 					</p>
 				</div>
 			</form>

@@ -1,5 +1,9 @@
-import React from 'react';
+import { FC } from 'react';
 
-export const SignupVendor = () => {
+interface Props {
+	setToRegister: (value: boolean) => void;
+}
+
+export const SignupVendor: FC<Props> = ({ setToRegister }) => {
 	return <div>Registro Vendedor</div>;
 };
