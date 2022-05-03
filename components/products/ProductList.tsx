@@ -6,12 +6,14 @@ interface Props {
 	products: Products[];
 	categories: Category[];
 	currentCategory: string;
+	editMode?: boolean;
 }
 
 export const ProductList: FC<Props> = ({
 	products,
 	categories,
-	currentCategory
+	currentCategory,
+	editMode = false
 }) => {
 	return (
 		<div className='mt-5'>
@@ -21,13 +23,19 @@ export const ProductList: FC<Props> = ({
 				</h3>
 			)}
 			<div className='flex flex-wrap gap-3'>
-				{products.map((product) => (
-					<ProductItem
-						key={product.id}
-						product={product}
-						category={categories[product.categoryId].name}
-					/>
-				))}
+				{products.map((product) => {
+					const category = categories.find(
+						(category) => category.id === product.categoryId
+					);
+					return (
+						<ProductItem
+							key={product.id}
+							product={product}
+							category={category!.name}
+							editMode={editMode}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);

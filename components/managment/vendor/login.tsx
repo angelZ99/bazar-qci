@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { showToast } from '../../../lib/notifications';
 import { validateEmail, validatePassword } from '../../../lib/helpers';
 import { IAdmin } from '../../../interfaces';
+import Cookies from 'js-cookie';
 
 interface DataForm {
 	email: string;
@@ -49,8 +50,11 @@ export const LoginVendor: FC<Props> = ({ setToRegister }) => {
 				return;
 			}
 			showToast('success', 'Bienvenido');
-			window.localStorage.setItem('admin', JSON.stringify(admin));
-			router.push('/managment/vendors');
+			Cookies.set(
+				'admin',
+				JSON.stringify({ role: admin.role, email: admin.email })
+			);
+			router.push('/managment/vendors/home');
 		}
 	};
 

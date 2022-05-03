@@ -169,20 +169,27 @@ const deleteProduct = async (
 	res: NextApiResponse<Data>
 ) => {
 	const { id = 0 } = req.body;
+
 	try {
 		if (id === 0) {
 			return res.status(400).json({ message: 'Invalid id' });
 		} else {
-			const product = await prisma.products.delete({
+			const product = await prisma.products.findUnique({
 				where: {
-					id: id
+					id
 				}
 			});
-
 			if (!product) {
 				return res.status(404).json({ message: 'Product not found' });
 			} else {
-				return res.status(200).json({ message: 'Product deleted' });
+				const del = await prisma.products.delete({
+					where: {
+						id
+					}
+				});
+				if (!del) {
+					return res.status(500).json({ message: 'Internal Server Error' });
+				} else return res.status(200).json({ message: 'Product deleted' });
 			}
 		}
 	} catch (error) {

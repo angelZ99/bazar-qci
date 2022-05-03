@@ -58,10 +58,10 @@ model Products {
   updatedAt DateTime @updatedAt @default(now())
   published Boolean @default(false)
   //Product to Category Relationship
-  category Category @relation(fields: [categoryId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   categoryId Int
   //Product to Vendors Relationship
-  vendor Vendors @relation(fields: [vendorCode], references: [vendorCode])
+  vendor Vendors @relation(fields: [vendorCode], references: [vendorCode], onDelete: Cascade)
   vendorCode Int
   //Images Relationship
   images Images[]
@@ -89,7 +89,7 @@ model Images {
   id Int @id @unique @default(autoincrement())
   url String
   //Product to Images Relationship
-  product Products @relation(fields: [productId], references: [id])
+  product Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
 }
 
@@ -100,13 +100,13 @@ model Comments {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   //Product to Comments Relationship
-  product Products @relation(fields: [productId], references: [id])
+  product Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   //User to Comments Relationship
   user Users @relation(fields: [userCode], references: [userCode])
   userCode Int
   // RatingProduct to Product Relationship
-  ratingProduct RatingProduct @relation(fields: [ratingId], references: [id])
+  ratingProduct RatingProduct @relation(fields: [ratingId], references: [id], onDelete: Cascade)
   ratingId Int
 }
 
@@ -114,7 +114,7 @@ model RatingProduct {
   id Int @id @unique @default(autoincrement())
   rating Float @default(0)
   //Product to ratingProduct Relationship
-  product Products @relation(fields: [productId], references: [id])
+  product Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   //Comments Relationship
   comments Comments[]
@@ -124,10 +124,10 @@ model Favorites {
   id Int @id @unique @default(autoincrement())
   createdAt DateTime @default(now())
   //Product to Favorites Relationship
-  product Products @relation(fields: [productId], references: [id])
+  product Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   //User to Favorites Relationship
-  user Users @relation(fields: [userCode], references: [userCode])
+  user Users @relation(fields: [userCode], references: [userCode], onDelete: Cascade)
   userCode Int
 }
 
@@ -137,9 +137,9 @@ model Reports {
   description String
   createdAt DateTime @default(now())
   //Product to Reports Relationship
-  product Products @relation(fields: [productId], references: [id])
+  product Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   //User to Reports Relationship
-  user Users @relation(fields: [userCode], references: [userCode])
+  user Users @relation(fields: [userCode], references: [userCode], onDelete: Cascade)
   userCode Int
 }

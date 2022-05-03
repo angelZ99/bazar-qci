@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IAdmin } from '../../../interfaces';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const index = () => {
 	const router = useRouter();
+
 	useEffect(() => {
-		const data: IAdmin = JSON.parse(localStorage.getItem('admin') || '{}');
-		if (data.role === 'vendor') {
-			router.push('/managment/vendors');
-		} else if (data.role === 'admin') {
-			router.push('/managment/admin');
+		if (!Cookies.get('admin')) {
+			router.replace('/managment');
+		} else {
+			const { role } = JSON.parse(Cookies.get('admin') as string);
+			if (role !== 'admin') {
+				router.replace('/managment');
+			}
 		}
-		router.push('/managment');
 	}, []);
 	return <div>index</div>;
 };

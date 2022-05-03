@@ -6,13 +6,16 @@ import { Products } from '@prisma/client';
 interface Props {
 	product: Products;
 	category: string;
+	editMode?: boolean;
 }
 
-export const ProductItem: FC<Props> = ({ product, category }) => {
+export const ProductItem: FC<Props> = ({ product, category, editMode }) => {
 	return (
 		<Link
 			href={{
-				pathname: '/products/view/[id]',
+				pathname: `${
+					editMode ? '/managment/vendors/view/[id]' : '/products/view/[id]'
+				}`,
 				query: { id: product.id, name: product.name }
 			}}
 		>

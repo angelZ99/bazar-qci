@@ -20,3 +20,11 @@ export interface IAdmin {
 	phoneNumber?: string;
 	rating?: number;
 }
+
+export interface IProduct {
+	name: string;
+	description: string;
+	price: number;
+	categoryId: number;
+	published: boolean;
+}

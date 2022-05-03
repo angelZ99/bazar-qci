@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { NextPage, GetServerSideProps } from 'next';
+import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
+
 import {
 	LoginVendor,
 	LoginAdmin,
@@ -12,12 +14,15 @@ import { IAdmin } from '../../interfaces';
 
 const IndexProductsPage: NextPage = () => {
 	const router = useRouter();
+
 	useEffect(() => {
-		const data: IAdmin = JSON.parse(localStorage.getItem('admin') || '{}');
-		if (data.role === 'vendor') {
-			router.push('/managment/vendors');
-		} else if (data.role === 'admin') {
-			router.push('/managment/admin');
+		if (Cookies.get('admin')) {
+			const { role } = JSON.parse(Cookies.get('admin') as string);
+			if (role === 'admin') {
+				router.push('/managment/admin');
+			} else if (role === 'vendor') {
+				router.push('/managment/vendors/home');
+			}
 		}
 	}, []);
 
@@ -65,12 +70,6 @@ const IndexProductsPage: NextPage = () => {
 			</div>
 		</>
 	);
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	return {
-		props: {}
-	};
 };
 
 export default IndexProductsPage;
