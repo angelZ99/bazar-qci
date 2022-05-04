@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { Products, Category, Images } from '@prisma/client';
+import { Products, Category, Images, RatingProduct } from '@prisma/client';
 import superjson from 'superjson';
 import prisma from '../../lib/prisma';
 import { ShopLayout } from '../../components/layouts';
@@ -10,6 +10,7 @@ import { CategoryList, ProductList } from '../../components/products/';
 interface Props {
 	products: (Products & {
 		images: Images[];
+		rating: RatingProduct | null;
 	})[];
 	categories: Category[];
 }
@@ -54,7 +55,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			categoryId: parseInt(id as string)
 		},
 		include: {
-			images: true
+			images: true,
+			rating: true
 		}
 	});
 

@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import prisma from '../../../lib/prisma';
 import superjson from 'superjson';
 import Cookies from 'js-cookie';
-import { Products, Vendors, Category, Images } from '.prisma/client';
+import {
+	Products,
+	Vendors,
+	Category,
+	Images,
+	RatingProduct
+} from '.prisma/client';
 import { AdminLayout } from '../../../components/layouts';
 import { ProductList } from '../../../components/products/ProductList';
 import Link from 'next/link';
@@ -14,6 +19,7 @@ interface Props {
 	allData: Vendors & {
 		products: (Products & {
 			images: Images[];
+			rating: RatingProduct | null;
 		})[];
 	};
 	categories: Category[];
@@ -115,7 +121,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		include: {
 			products: {
 				include: {
-					images: true
+					images: true,
+					rating: true
 				}
 			}
 		}

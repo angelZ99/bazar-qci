@@ -5,13 +5,14 @@ import superjson from 'superjson';
 import { ShopLayout } from '../../../components/layouts';
 import { ProductList } from '../../../components/products';
 import prisma from '../../../lib/prisma';
-import { Category, Images, Products } from '@prisma/client';
+import { Category, Images, Products, RatingProduct } from '@prisma/client';
 import { isValidToken } from '../../../lib/jwt';
 
 interface Props {
 	categories: Category[];
 	products: (Products & {
 		images: Images[];
+		rating: RatingProduct | null;
 	})[];
 }
 
@@ -61,7 +62,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			include: {
 				product: {
 					include: {
-						images: true
+						images: true,
+						rating: true
 					}
 				}
 			}

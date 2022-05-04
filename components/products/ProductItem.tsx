@@ -1,11 +1,12 @@
 import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Images, Products } from '@prisma/client';
+import { Images, Products, RatingProduct } from '@prisma/client';
 
 interface Props {
 	product: Products & {
 		images: Images[];
+		rating: RatingProduct | null;
 	};
 	category: string;
 	editMode?: boolean;
@@ -46,7 +47,7 @@ export const ProductItem: FC<Props> = ({ product, category, editMode }) => {
 							height={20}
 							alt='Image money'
 						/>
-						<span className='ml-1 text-sm'> 4.1 </span>
+						<span className='ml-1 text-sm'> {product.rating?.rating} </span>
 					</div>
 					<p className='text-xs text-ellipsis whitespace-nowrap overflow-hidden text-center'>
 						Categoria: <span className='font-semibold'>{category}</span>

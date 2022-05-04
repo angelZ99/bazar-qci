@@ -82,7 +82,7 @@ const LoginPage = () => {
 							}
 						/>
 						<a className='flex justify-center mt-1 text-xs text-blue-600 font-semibold'>
-							¿Olvidaste tu contraseña?
+							{/* ¿Olvidaste tu contraseña? */}
 						</a>
 					</div>
 					{/* Submit */}

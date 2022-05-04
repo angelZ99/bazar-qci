@@ -100,7 +100,7 @@ export const LoginVendor: FC<Props> = ({ setToRegister }) => {
 						}
 					/>
 					<a className='flex justify-center mt-1 text-xs text-blue-600 font-semibold'>
-						¿Olvidaste tu contraseña?
+						{/* ¿Olvidaste tu contraseña? */}
 					</a>
 				</div>
 				{/* Submit */}
@@ -113,7 +113,7 @@ export const LoginVendor: FC<Props> = ({ setToRegister }) => {
 					<p className='text-xs font-semibold mb-3'>
 						¿No tienes una cuenta? <br />
 						<a
-							className='text-blue-600'
+							className='text-blue-600 hover:cursor-pointer'
 							onClick={() => {
 								setToRegister(true);
 							}}

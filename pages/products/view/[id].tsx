@@ -6,13 +6,22 @@ import Link from 'next/link';
 import superjson from 'superjson';
 import prisma from '../../../lib/prisma';
 import { AuthContext } from '../../../context/auth/AuthContext';
-import { Products, Vendors, Comments, RatingProduct } from '@prisma/client';
+import {
+	Products,
+	Vendors,
+	Comments,
+	RatingProduct,
+	Images
+} from '@prisma/client';
 import { ShopLayout } from '../../../components/layouts';
 import { showToast, commentModal } from '../../../lib/notifications';
 import { CommentList } from '../../../components/products/comments/CommentList';
 
 interface Props {
-	product: Products;
+	product: Products & {
+		images: Images[];
+		rating: RatingProduct | null;
+	};
 	vendor: Vendors;
 	comments: (Comments & {
 		user: {
@@ -55,7 +64,7 @@ const IndexProductsPage: NextPage<Props> = ({
 
 	const handleComment = () => {
 		/*@ts-ignore*/
-		commentModal(product.name, user?.userCode!, product.id, product.rating.id);
+		commentModal(product.name, user?.userCode!, product.id, product.rating?.id);
 	};
 
 	//* Methods to handle favorites
@@ -115,11 +124,25 @@ const IndexProductsPage: NextPage<Props> = ({
 		}
 	};
 
+	console.log(router);
+	const textMessage = `
+		Hola ${vendor.firstName}, Me interesa este producto: ${product.name} 
+		~~~ ${router.basePath + router.asPath}
+	`;
+
 	return (
 		<ShopLayout title={product.name} pageDescription={product.description}>
 			<div>
 				<div className='flex mb-3'>
-					<Image src='/img/food.png' width={120} height={120} alt='food-icon' />
+					<div className='w-[150px] h-[150px]'>
+						<Image
+							src={product.images[0].url}
+							width={150}
+							height={150}
+							layout='responsive'
+							alt='food-icon'
+						/>
+					</div>
 					{/***** Header Product *****/}
 					<div className='ml-5'>
 						<h2 className='text-xl font-semibold mb-3'>{product.name}</h2>
@@ -179,9 +202,16 @@ const IndexProductsPage: NextPage<Props> = ({
 				{/***** Contact Vendor *****/}
 				<div className='flex justify-center mb-8'>
 					<button className='border-2 border-gray-600 rounded w-full bg-zinc-800 p-2 shadow'>
-						<span className='font-semibold text-white uppercase italic text-lg'>
-							Contactar al vendedor
-						</span>
+						<Link
+							href={`https://wa.me/${vendor.phoneNumber}?text=${textMessage}`}
+						>
+							<a
+								className='font-semibold text-white uppercase italic text-lg'
+								target='_blank'
+							>
+								Contactar al vendedor
+							</a>
+						</Link>
 					</button>
 				</div>
 				{/***** Comments Product *****/}
@@ -217,6 +247,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			id: Number(id)
 		},
 		include: {
+			images: true,
 			rating: true
 		}
 	});

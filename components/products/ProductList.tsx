@@ -1,10 +1,11 @@
 import { FC } from 'react';
-import { Category, Images, Products } from '@prisma/client';
+import { Category, Images, Products, RatingProduct } from '@prisma/client';
 import { ProductItem } from './';
 
 interface Props {
 	products: (Products & {
 		images: Images[];
+		rating: RatingProduct | null;
 	})[];
 	categories: Category[];
 	currentCategory: string;
