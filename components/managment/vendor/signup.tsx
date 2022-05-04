@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import Cookies from 'js-cookie';
 import { showToast } from '../../../lib/notifications';
 import {
 	validateEmail,
@@ -46,10 +46,8 @@ export const SignupVendor: FC<Props> = ({ setToRegister }) => {
 				return;
 			}
 			showToast('success', 'Bienvenido ' + firstName);
-			setTimeout(() => {
-				router.replace('/');
-			}, 2000);
-			router.replace('/');
+			Cookies.set('admin', JSON.stringify({ role: 'vendor', email }));
+			router.reload();
 		}
 	};
 
@@ -81,7 +79,7 @@ export const SignupVendor: FC<Props> = ({ setToRegister }) => {
 		const { vendorCode, firstName, lastName, email, password, phoneNumber } =
 			data;
 
-		const vendor = await fetch('/api/auth/adminRegister', {
+		return await fetch('/api/auth/adminRegister', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -92,15 +90,20 @@ export const SignupVendor: FC<Props> = ({ setToRegister }) => {
 				lastName,
 				email,
 				password,
-				phoneNumber
+				phoneNumber,
+				role: 'vendor'
 			})
 		})
-			.then((res) => res.json())
-			.catch((err) => console.log(err));
-
-		console.log(vendor);
-
-		return false;
+			.then((res) => {
+				if (res.status === 200) {
+					return true;
+				}
+				return false;
+			})
+			.catch((err) => {
+				console.log(err);
+				return false;
+			});
 	};
 
 	return (

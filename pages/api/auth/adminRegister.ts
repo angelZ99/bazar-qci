@@ -46,6 +46,8 @@ const registerAdmin = async (
 		role: string;
 	};
 
+	console.log(req.body);
+
 	const vendor = await prisma.vendors.findUnique({
 		where: {
 			vendorCode

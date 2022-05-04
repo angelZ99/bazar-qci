@@ -124,7 +124,6 @@ const IndexProductsPage: NextPage<Props> = ({
 		}
 	};
 
-	console.log(router);
 	const textMessage = `
 		Hola ${vendor.firstName}, Me interesa este producto: ${product.name} 
 		~~~ ${router.basePath + router.asPath}
