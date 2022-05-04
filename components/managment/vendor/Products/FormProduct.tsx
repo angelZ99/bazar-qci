@@ -7,13 +7,15 @@ interface Props {
 	vendor: Vendors;
 	newProduct: IProduct;
 	setNewProduct: (newProduct: IProduct) => void;
+	rating?: number;
 }
 
 export const FormProduct: FC<Props> = ({
 	categories,
 	setNewProduct,
 	newProduct,
-	vendor
+	vendor,
+	rating = 0
 }) => {
 	const { firstName, lastName } = vendor;
 
@@ -70,7 +72,10 @@ export const FormProduct: FC<Props> = ({
 						</select>
 					</div>
 					{/* Rating */}
-					<div className='w-full'>Calificacion: - </div>
+					<div className='w-full'>
+						Calificacion:
+						<span className='font-semibold'> {rating} </span>
+					</div>
 					{/* Vendor */}
 					<div className='w-full'>
 						Vendedor: <br />

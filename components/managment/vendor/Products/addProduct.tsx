@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { IProduct } from '../../../../interfaces';
 import { Vendors } from '@prisma/client';
-import { showToast } from '../../../../lib/notifications';
+import { showToast, spinnerModal } from '../../../../lib/notifications';
 
 interface Props {
 	vendor: Vendors;
@@ -17,8 +17,6 @@ export const ButtonAdd: FC<Props> = ({
 	vendor
 }) => {
 	const handleAddProduct = async () => {
-		UploadFiles();
-
 		const validations = () => {
 			if (newProduct.name.length < 3) {
 				showToast(
@@ -51,6 +49,8 @@ export const ButtonAdd: FC<Props> = ({
 		};
 
 		if (validations()) {
+			spinnerModal(false);
+
 			await fetch('/api/products/product', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -68,6 +68,8 @@ export const ButtonAdd: FC<Props> = ({
 					const { product } = await res.json();
 					const urls = await UploadFiles();
 					const images = await concatenateImage(urls, product.id);
+					spinnerModal(true);
+					showToast('success', 'Producto agregado correctamente');
 				})
 				.catch((err) => {
 					showToast('error', 'Error al agregar el producto');

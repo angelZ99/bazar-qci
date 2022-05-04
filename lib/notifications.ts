@@ -3,6 +3,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 const Toast = withReactContent(Swal);
 const Comment = withReactContent(Swal);
+const Spinner = withReactContent(Swal);
 
 export const showToast = (type: string, message: string) => {
 	Toast.fire({
@@ -76,4 +77,19 @@ export const commentModal = (
 		.catch((err) => {
 			console.log(err);
 		});
+};
+
+export const spinnerModal = (state: boolean) => {
+	if (!state) {
+		Spinner.fire({
+			title: 'Cargando, espere porfavor...',
+			didOpen: () => {
+				Spinner.showLoading();
+			},
+			showConfirmButton: false,
+			showCancelButton: false
+		});
+	} else {
+		return Spinner.close();
+	}
 };

@@ -48,3 +48,19 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default Home;
+
+{
+	//TODO:
+	//$ create function to get the best sellers and best vendors	 |Sun|
+	//$ Create a list of best sellers and best vendors						 |Sun|
+	//
+	//$ create a visualizer of the multiple images of the products |Sun|
+	//$ delete and edit the images of the products								 |Sun|
+	//
+	//$ update comments of the products										 				 |Mon|
+	//$ delete comments of the products 													 |Mon|
+	//
+	//$ admin login 																							 |Mon|
+	//$ reports of the products																		 |Tue|
+	//$ admin dashboard with the reports of the products					 |Tue|
+}

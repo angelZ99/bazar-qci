@@ -28,6 +28,7 @@ interface Props {
 	vendor: Vendors;
 	product?: Products & {
 		images: Images[];
+		rating: RatingProduct | null;
 	};
 	rating?: RatingProduct;
 	comments?: Comments;
@@ -90,6 +91,7 @@ const CrudProduct: NextPage<Props> = ({
 					newProduct={newProduct}
 					setNewProduct={setNewProduct}
 					vendor={vendor}
+					rating={product?.rating?.rating}
 				/>
 			</div>
 			{isEdit ? (
@@ -143,7 +145,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			id: Number(id)
 		},
 		include: {
-			images: true
+			images: true,
+			rating: true
 		}
 	});
 
