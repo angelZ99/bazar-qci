@@ -22,7 +22,7 @@ interface DataForm {
 
 const SignUpPage = () => {
 	const router = useRouter();
-	const { registerUser } = useContext(AuthContext);
+	const { isAuthenticated, registerUser } = useContext(AuthContext);
 	const [data, setData] = useState<DataForm>({
 		userCode: 0,
 		firstName: '',
@@ -32,18 +32,12 @@ const SignUpPage = () => {
 		password2: ''
 	});
 
-	const { isAuthenticated } = useContext(AuthContext);
 	if (isAuthenticated) {
 		router.push('/');
 	}
 
 	const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		const { userCode, firstName, lastName, email, password } = data;
-
-		const { isAuthenticated } = useContext(AuthContext);
-		if (isAuthenticated) {
-			router.push('/');
-		}
 
 		e.preventDefault();
 		if (validations()) {

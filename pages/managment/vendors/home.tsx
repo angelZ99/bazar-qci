@@ -5,19 +5,21 @@ import Image from 'next/image';
 import prisma from '../../../lib/prisma';
 import superjson from 'superjson';
 import Cookies from 'js-cookie';
-import { Products, Vendors, Category } from '.prisma/client';
+import { Products, Vendors, Category, Images } from '.prisma/client';
 import { AdminLayout } from '../../../components/layouts';
 import { ProductList } from '../../../components/products/ProductList';
 import Link from 'next/link';
 
 interface Props {
 	allData: Vendors & {
-		products: Products[];
+		products: (Products & {
+			images: Images[];
+		})[];
 	};
 	categories: Category[];
 }
 
-const index: NextPage<Props> = ({ allData, categories }) => {
+const Home: NextPage<Props> = ({ allData, categories }) => {
 	const router = useRouter();
 
 	const { products } = allData;
@@ -90,11 +92,20 @@ const index: NextPage<Props> = ({ allData, categories }) => {
 	);
 };
 
-export default index;
+export default Home;
 
-//* Get all data from prisma and return it to props
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const { admin } = ctx.req.cookies;
+
+	if (!admin) {
+		return {
+			redirect: {
+				permanent: true,
+				destination: '/managment/'
+			}
+		};
+	}
+
 	const { email } = JSON.parse(admin);
 
 	const vendor = await prisma.vendors.findUnique({
@@ -102,7 +113,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			email: email
 		},
 		include: {
-			products: true
+			products: {
+				include: {
+					images: true
+				}
+			}
 		}
 	});
 

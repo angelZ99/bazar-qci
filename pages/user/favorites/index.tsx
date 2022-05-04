@@ -5,12 +5,14 @@ import superjson from 'superjson';
 import { ShopLayout } from '../../../components/layouts';
 import { ProductList } from '../../../components/products';
 import prisma from '../../../lib/prisma';
-import { Category, Products } from '@prisma/client';
+import { Category, Images, Products } from '@prisma/client';
 import { isValidToken } from '../../../lib/jwt';
 
 interface Props {
 	categories: Category[];
-	products: Products[];
+	products: (Products & {
+		images: Images[];
+	})[];
 }
 
 const Home: NextPage<Props> = ({ categories, products }) => {
@@ -57,7 +59,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 				userCode
 			},
 			include: {
-				product: true
+				product: {
+					include: {
+						images: true
+					}
+				}
 			}
 		});
 		const products = favorites.map((favorite) => favorite.product);

@@ -1,9 +1,11 @@
-import { Category, Products } from '@prisma/client';
 import { FC } from 'react';
+import { Category, Images, Products } from '@prisma/client';
 import { ProductItem } from './';
 
 interface Props {
-	products: Products[];
+	products: (Products & {
+		images: Images[];
+	})[];
 	categories: Category[];
 	currentCategory: string;
 	editMode?: boolean;

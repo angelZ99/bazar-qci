@@ -1,10 +1,12 @@
 import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Products } from '@prisma/client';
+import { Images, Products } from '@prisma/client';
 
 interface Props {
-	product: Products;
+	product: Products & {
+		images: Images[];
+	};
 	category: string;
 	editMode?: boolean;
 }
@@ -21,6 +23,12 @@ export const ProductItem: FC<Props> = ({ product, category, editMode }) => {
 		>
 			<a className='flex flex-col border rounded-xl min-h-[250px] w-[47%] md:w-[32%] xl:w-[23%] p-3 justify-between mb-5 z-0'>
 				<h4 className='text-center font-semibold mb-2'>{product.name}</h4>
+				<Image
+					src={product.images[0].url}
+					width={250}
+					height={250}
+					alt={product.name}
+				/>
 				<div className='flex justify-around flex-wrap'>
 					<div className='flex'>
 						<Image

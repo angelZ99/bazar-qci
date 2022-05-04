@@ -1,14 +1,16 @@
 import React from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { Products, Category } from '@prisma/client';
+import { Products, Category, Images } from '@prisma/client';
 import superjson from 'superjson';
 import prisma from '../../lib/prisma';
 import { ShopLayout } from '../../components/layouts';
 import { CategoryList, ProductList } from '../../components/products/';
 
 interface Props {
-	products: Products[];
+	products: (Products & {
+		images: Images[];
+	})[];
 	categories: Category[];
 }
 
@@ -50,6 +52,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const products = await prisma.products.findMany({
 		where: {
 			categoryId: parseInt(id as string)
+		},
+		include: {
+			images: true
 		}
 	});
 

@@ -22,10 +22,10 @@ const main = async () => {
 			data: users,
 			skipDuplicates: true
 		});
-		await prisma.vendors.createMany({
-			data: vendors,
-			skipDuplicates: true
-		});
+		// await prisma.vendors.createMany({
+		// 	data: vendors,
+		// 	skipDuplicates: true
+		// });
 		await prisma.products.createMany({
 			data: products,
 			skipDuplicates: true

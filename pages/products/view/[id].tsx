@@ -119,7 +119,7 @@ const IndexProductsPage: NextPage<Props> = ({
 		<ShopLayout title={product.name} pageDescription={product.description}>
 			<div>
 				<div className='flex mb-3'>
-					<Image src='/img/food.png' width={120} height={120} />
+					<Image src='/img/food.png' width={120} height={120} alt='food-icon' />
 					{/***** Header Product *****/}
 					<div className='ml-5'>
 						<h2 className='text-xl font-semibold mb-3'>{product.name}</h2>
@@ -168,7 +168,12 @@ const IndexProductsPage: NextPage<Props> = ({
 						onClick={isFavorite ? removeFavorite : addFavorite}
 					>
 						{isFavorite ? 'Eliminar de favoritos' : 'Agregar a Favoritos'}
-						<Image src='/img/white-favorite.png' width={24} height={24} />
+						<Image
+							src='/img/white-favorite.png'
+							width={24}
+							height={24}
+							alt='favorite-icon'
+						/>
 					</button>
 				</div>
 				{/***** Contact Vendor *****/}

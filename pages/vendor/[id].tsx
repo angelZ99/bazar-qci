@@ -3,11 +3,13 @@ import { GetServerSideProps, NextPage } from 'next';
 import superjson from 'superjson';
 import prisma from '../../lib/prisma';
 import { ShopLayout } from '../../components/layouts';
-import { Category, Products, Vendors } from '@prisma/client';
+import { Category, Images, Products, Vendors } from '@prisma/client';
 import { ProductList } from '../../components/products/ProductList';
 
 interface Props {
-	products: Products[];
+	products: (Products & {
+		images: Images[];
+	})[];
 	vendor: Vendors;
 	categories: Category[];
 }
@@ -53,6 +55,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const products = await prisma.products.findMany({
 		where: {
 			vendorCode: Number(id)
+		},
+		include: {
+			images: true
 		}
 	});
 

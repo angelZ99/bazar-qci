@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { IAdmin } from '../../../interfaces';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
-const index = () => {
+const Home = () => {
 	const router = useRouter();
 
 	useEffect(() => {
@@ -19,4 +18,4 @@ const index = () => {
 	return <div>index</div>;
 };
 
-export default index;
+export default Home;
