@@ -18,18 +18,18 @@ const main = async () => {
 			data: categories,
 			skipDuplicates: true
 		});
-		await prisma.users.createMany({
-			data: users,
-			skipDuplicates: true
-		});
+		// await prisma.users.createMany({
+		// 	data: users,
+		// 	skipDuplicates: true
+		// });
 		// await prisma.vendors.createMany({
 		// 	data: vendors,
 		// 	skipDuplicates: true
 		// });
-		await prisma.products.createMany({
-			data: products,
-			skipDuplicates: true
-		});
+		// await prisma.products.createMany({
+		// 	data: products,
+		// 	skipDuplicates: true
+		// });
 	} catch (error) {
 		console.error({
 			type: 'Error',

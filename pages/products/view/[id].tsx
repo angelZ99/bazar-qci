@@ -16,6 +16,8 @@ import {
 import { ShopLayout } from '../../../components/layouts';
 import { showToast, commentModal } from '../../../lib/notifications';
 import { CommentList } from '../../../components/products/comments/CommentList';
+//@ts-ignore
+import ImageGallery from 'react-image-gallery';
 
 interface Props {
 	product: Products & {
@@ -61,6 +63,13 @@ const IndexProductsPage: NextPage<Props> = ({
 			}
 		}
 	}, [user]);
+
+	const images = product.images.map((image) => {
+		return {
+			original: image.url,
+			thumbnail: image.url
+		};
+	});
 
 	const handleComment = () => {
 		/*@ts-ignore*/
@@ -134,12 +143,15 @@ const IndexProductsPage: NextPage<Props> = ({
 			<div>
 				<div className='flex mb-3'>
 					<div className='w-[150px] h-[150px]'>
-						<Image
-							src={product.images[0].url}
-							width={150}
-							height={150}
-							layout='responsive'
-							alt='food-icon'
+						<ImageGallery
+							items={images}
+							infite={true}
+							lazyload={true}
+							showIndex={true}
+							showThumbnails={false}
+							showFullscreenButton={false}
+							showPlayButton={false}
+							slideInterval={2000}
 						/>
 					</div>
 					{/***** Header Product *****/}
