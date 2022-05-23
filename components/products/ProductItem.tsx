@@ -17,7 +17,7 @@ export const ProductItem: FC<Props> = ({ product, category, editMode }) => {
 		<Link
 			href={{
 				pathname: `${
-					editMode ? '/managment/vendors/view/[id]' : '/products/view/[id]'
+					editMode ? '/management/vendors/view/[id]' : '/products/view/[id]'
 				}`,
 				query: { id: product.id, name: product.name }
 			}}

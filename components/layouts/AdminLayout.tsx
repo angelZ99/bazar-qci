@@ -40,7 +40,9 @@ export const AdminLayout: FC<Props> = ({
 				<header className='w-full flex md:justify-evenly justify-between items-end m-auto bg-zinc-800 h-[80px] px-[30px] pb-3 mb-5'>
 					<div>
 						<Link
-							href={`/managment/${role === 'admin' ? 'admin' : 'vendors/home'}`}
+							href={`/management/${
+								role === 'admin' ? 'admin' : 'vendors/home'
+							}`}
 							passHref
 						>
 							<a className='flex pb-2'>
@@ -66,7 +68,7 @@ export const AdminLayout: FC<Props> = ({
 									className='underline underline-offset-1'
 									onClick={() => {
 										Cookies.remove('admin');
-										router.push('/managment/');
+										router.push('/management/');
 									}}
 								>
 									Cerrar sesion

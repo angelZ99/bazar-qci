@@ -1,22 +1,27 @@
 import { PrismaClient } from '@prisma/client';
-import { categories, products, users, vendors } from '../data';
+import { categories, admin, products, users, vendors } from '../data';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
 	try {
-		await prisma.$executeRaw`TRUNCATE "Category" RESTART IDENTITY CASCADE;`;
-		await prisma.$executeRaw`TRUNCATE "Products" RESTART IDENTITY CASCADE;`;
 		await prisma.$executeRaw`TRUNCATE "Admin" RESTART IDENTITY CASCADE;`;
-		await prisma.$executeRaw`TRUNCATE "Images" RESTART IDENTITY CASCADE;`;
+		await prisma.$executeRaw`TRUNCATE "Category" RESTART IDENTITY CASCADE;`;
 		await prisma.$executeRaw`TRUNCATE "Comments" RESTART IDENTITY CASCADE;`;
-		await prisma.$executeRaw`TRUNCATE "RatingProduct" RESTART IDENTITY CASCADE;`;
 		await prisma.$executeRaw`TRUNCATE "Favorites" RESTART IDENTITY CASCADE;`;
+		await prisma.$executeRaw`TRUNCATE "Images" RESTART IDENTITY CASCADE;`;
+		await prisma.$executeRaw`TRUNCATE "Products" RESTART IDENTITY CASCADE;`;
+		await prisma.$executeRaw`TRUNCATE "RatingProduct" RESTART IDENTITY CASCADE;`;
 		await prisma.$executeRaw`TRUNCATE "Reports" RESTART IDENTITY CASCADE;`;
+		await prisma.$executeRaw`TRUNCATE "Vendors" RESTART IDENTITY CASCADE;`;
+		await prisma.$executeRaw`TRUNCATE "Users" RESTART IDENTITY CASCADE;`;
 
 		await prisma.category.createMany({
 			data: categories,
 			skipDuplicates: true
+		});
+		await prisma.admin.create({
+			data: admin[0]
 		});
 		// await prisma.users.createMany({
 		// 	data: users,

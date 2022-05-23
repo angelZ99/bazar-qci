@@ -32,11 +32,11 @@ const Home: NextPage<Props> = ({ allData, categories }) => {
 
 	useEffect(() => {
 		if (!Cookies.get('admin')) {
-			router.replace('/managment');
+			router.replace('/management');
 		} else {
 			const { role } = JSON.parse(Cookies.get('admin') as string);
 			if (role !== 'vendor') {
-				router.replace('/managment');
+				router.replace('/management');
 			}
 		}
 	}, []);
@@ -74,7 +74,7 @@ const Home: NextPage<Props> = ({ allData, categories }) => {
 			<div className='flex mt-5'>
 				<Link
 					href={{
-						pathname: '/managment/vendors/view/[id]',
+						pathname: '/management/vendors/view/[id]',
 						query: { id: 0, name: '' }
 					}}
 				>
@@ -107,7 +107,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		return {
 			redirect: {
 				permanent: true,
-				destination: '/managment/'
+				destination: '/management/'
 			}
 		};
 	}

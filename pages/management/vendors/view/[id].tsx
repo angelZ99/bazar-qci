@@ -14,13 +14,13 @@ import {
 } from '@prisma/client';
 import { IProduct } from '../../../../interfaces';
 import { AdminLayout } from '../../../../components/layouts';
-import { ImageBuilder } from '../../../../components/products/';
+import { ImageBuilder } from '../../../../components/products';
 import {
 	ButtonDelete,
 	ButtonAdd,
 	ButtonEdit,
 	FormProduct
-} from '../../../../components/managment/';
+} from '../../../../components/management';
 
 interface Props {
 	isEdit: boolean;
@@ -52,11 +52,11 @@ const CrudProduct: NextPage<Props> = ({
 
 	useEffect(() => {
 		if (!Cookies.get('admin')) {
-			router.replace('/managment');
+			router.replace('/management');
 		} else {
 			const { role } = JSON.parse(Cookies.get('admin') as string);
 			if (role !== 'vendor') {
-				router.replace('/managment');
+				router.replace('/management');
 			}
 		}
 

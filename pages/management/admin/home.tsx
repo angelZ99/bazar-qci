@@ -7,11 +7,11 @@ const Home = () => {
 
 	useEffect(() => {
 		if (!Cookies.get('admin')) {
-			router.replace('/managment');
+			router.replace('/management');
 		} else {
 			const { role } = JSON.parse(Cookies.get('admin') as string);
 			if (role !== 'admin') {
-				router.replace('/managment');
+				router.replace('/management');
 			}
 		}
 	}, []);

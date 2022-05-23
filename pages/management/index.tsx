@@ -9,7 +9,7 @@ import {
 	LoginVendor,
 	LoginAdmin,
 	SignupVendor
-} from '../../components/managment';
+} from '../../components/management';
 import { IAdmin } from '../../interfaces';
 
 const IndexProductsPage: NextPage = () => {
@@ -19,9 +19,9 @@ const IndexProductsPage: NextPage = () => {
 		if (Cookies.get('admin')) {
 			const { role } = JSON.parse(Cookies.get('admin') as string);
 			if (role === 'admin') {
-				router.push('/managment/admin');
+				router.push('/management/admin/home');
 			} else if (role === 'vendor') {
-				router.push('/managment/vendors/home');
+				router.push('/management/vendors/home');
 			}
 		}
 	}, []);

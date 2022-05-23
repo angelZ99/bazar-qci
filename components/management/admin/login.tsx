@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { showToast } from '../../../lib/notifications';
 import { validateEmail, validatePassword } from '../../../lib/helpers';
@@ -11,16 +10,13 @@ interface DataForm {
 	password: string;
 	role: string;
 }
-interface Props {
-	setToRegister: (value: boolean) => void;
-}
 
-export const LoginVendor: FC<Props> = ({ setToRegister }) => {
+export const LoginAdmin: FC = () => {
 	const router = useRouter();
 	const [data, setData] = useState<DataForm>({
 		email: '',
 		password: '',
-		role: 'vendor'
+		role: 'admin'
 	});
 
 	const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,7 +50,7 @@ export const LoginVendor: FC<Props> = ({ setToRegister }) => {
 				'admin',
 				JSON.stringify({ role: admin.role, email: admin.email })
 			);
-			router.push('/managment/vendors/home');
+			router.push('/management/admin/home');
 		}
 	};
 
@@ -77,7 +73,7 @@ export const LoginVendor: FC<Props> = ({ setToRegister }) => {
 				{/* Email */}
 				<div className='mb-3'>
 					<label htmlFor='' className='font-semibold'>
-						Correo institucional:
+						Correo:
 					</label>
 					<input
 						type='email'
@@ -110,17 +106,6 @@ export const LoginVendor: FC<Props> = ({ setToRegister }) => {
 							Iniciar Sesión
 						</span>
 					</button>
-					<p className='text-xs font-semibold mb-3'>
-						¿No tienes una cuenta? <br />
-						<a
-							className='text-blue-600 hover:cursor-pointer'
-							onClick={() => {
-								setToRegister(true);
-							}}
-						>
-							Registrate...
-						</a>
-					</p>
 				</div>
 			</form>
 		</div>

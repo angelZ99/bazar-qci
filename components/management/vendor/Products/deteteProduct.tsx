@@ -24,7 +24,7 @@ export const ButtonDelete: FC<Props> = ({ product }) => {
 			.then((res) => {
 				if (res.status === 200) {
 					showToast('success', 'Producto eliminado correctamente');
-					router.replace('/managment/vendors/home');
+					router.replace('/management/vendors/home');
 				} else showToast('error', 'No se pudo eliminar el producto');
 			})
 			.catch((err) => {
