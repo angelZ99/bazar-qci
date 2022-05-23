@@ -15,6 +15,10 @@ import Link from 'next/link';
 
 interface Props {
 	categories: Category[];
+	lastProducts: (Products & {
+		images: Images[];
+		rating: RatingProduct | null;
+	})[];
 	moreCommented: (Products & {
 		images: Images[];
 		rating: RatingProduct | null;
@@ -25,7 +29,12 @@ interface Props {
 	})[];
 }
 
-const Home: NextPage<Props> = ({ categories, moreCommented, bestRated }) => {
+const Home: NextPage<Props> = ({
+	categories,
+	bestRated,
+	lastProducts,
+	moreCommented
+}) => {
 	console.log(moreCommented);
 	console.log(bestRated);
 
@@ -37,12 +46,15 @@ const Home: NextPage<Props> = ({ categories, moreCommented, bestRated }) => {
 			}
 		>
 			<CategoryList categories={categories} />
-			{
-				// TODO: Implement a list of best sellers and best vendors
-				//<BestSellers products={products} />}
-				//<BestVendors vendors={vendors} />
-			}
 
+			<div className='flex flex-col mt-10'>
+				<h3 className='text-2xl font-semibold'>Productos mas nuevos:</h3>
+				<ProductList
+					categories={categories}
+					currentCategory=''
+					products={lastProducts}
+				/>
+			</div>
 			<div className='flex flex-col mt-10'>
 				<h3 className='text-2xl font-semibold'>Productos mas comentados:</h3>
 				<ProductList
@@ -73,6 +85,16 @@ const Home: NextPage<Props> = ({ categories, moreCommented, bestRated }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	const last20Products = await prisma.products.findMany({
+		orderBy: {
+			createdAt: 'desc'
+		},
+		include: {
+			images: true,
+			rating: true
+		},
+		take: 10
+	});
 	const moreCommented = await prisma.products.findMany({
 		take: 10,
 		orderBy: {
@@ -101,6 +123,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 	return {
 		props: {
+			lastProducts: superjson.serialize(last20Products).json,
 			moreCommented: superjson.serialize(moreCommented).json,
 			bestRated: superjson.serialize(bestRated).json,
 			categories

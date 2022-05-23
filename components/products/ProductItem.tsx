@@ -29,8 +29,9 @@ export const ProductItem: FC<Props> = ({ product, category, editMode }) => {
 					width={250}
 					height={250}
 					alt={product.name}
+					className='rounded-2xl'
 				/>
-				<div className='flex justify-around flex-wrap'>
+				<div className='flex justify-around flex-wrap mt-1'>
 					<div className='flex'>
 						<Image
 							src='/img/money.png'
