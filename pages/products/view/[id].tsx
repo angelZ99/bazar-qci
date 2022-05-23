@@ -71,9 +71,20 @@ const IndexProductsPage: NextPage<Props> = ({
 		};
 	});
 
-	const handleComment = () => {
+	const handleComment = async () => {
 		/*@ts-ignore*/
-		commentModal(product.name, user?.userCode!, product.id, product.rating?.id);
+		const result = await commentModal(
+			product.name,
+			user?.userCode!,
+			product.id,
+			product.rating?.id!
+		);
+		if (result != null) {
+			showToast('success', 'Comentario agregado');
+			router.reload();
+		} else {
+			showToast('error', 'Ya has comentado estre producto');
+		}
 	};
 
 	//* Methods to handle favorites
@@ -141,17 +152,21 @@ const IndexProductsPage: NextPage<Props> = ({
 	return (
 		<ShopLayout title={product.name} pageDescription={product.description}>
 			<div>
-				<div className='flex mb-3'>
-					<div className='w-[150px] h-[150px]'>
+				<div className='flex flex-col md:flex-row mb-3'>
+					<div className='w-full md:w-1/3 lg:w-1/4 xl:w-1/6 mb-2 '>
 						<ImageGallery
 							items={images}
 							infite={true}
 							lazyload={true}
 							showIndex={true}
 							showThumbnails={false}
-							showFullscreenButton={false}
+							showFullscreenButton={true}
+							useBrowserFullscreen={false}
+							slideOnThumbnailOver={true}
 							showPlayButton={false}
+							showNav={true}
 							slideInterval={2000}
+							size='100'
 						/>
 					</div>
 					{/***** Header Product *****/}

@@ -16,13 +16,14 @@ export const showToast = (type: string, message: string) => {
 	});
 };
 
-export const commentModal = (
+export const commentModal = async (
 	productName: string,
 	userCode: number,
 	productId: number,
 	ratingId: Number
 ) => {
-	Comment.fire({
+	let comentario = {};
+	return Comment.fire({
 		title: 'Caja de Comentario',
 		position: 'center',
 		html:
@@ -71,6 +72,8 @@ export const commentModal = (
 							productId
 						})
 					});
+					comentario = comment.json();
+					return comentario;
 				}
 			}
 		})

@@ -70,6 +70,7 @@ export const ButtonAdd: FC<Props> = ({
 					const images = await concatenateImage(urls, product.id);
 					spinnerModal(true);
 					showToast('success', 'Producto agregado correctamente');
+					resetState();
 				})
 				.catch((err) => {
 					showToast('error', 'Error al agregar el producto');

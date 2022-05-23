@@ -16,6 +16,11 @@ export const UploadComponent: FC<Props> = ({ vendorCode, files, setFiles }) => {
 		}
 	};
 
+	const deleteFile = (file: File) => {
+		/*@ts-ignore*/
+		setFiles((existing) => existing.filter((f) => f !== file));
+	};
+
 	return (
 		<div className='mb-7'>
 			<div
@@ -37,7 +42,10 @@ export const UploadComponent: FC<Props> = ({ vendorCode, files, setFiles }) => {
 							<img
 								src={URL.createObjectURL(file)}
 								alt={file.name}
-								className='w-[120px] '
+								className='w-[120px] hover:border-2 hover:border-red-700 hover:border-solid hover:before:content:"holaaaa"'
+								onClick={() => {
+									deleteFile(file);
+								}}
 							/>
 						</div>
 					))}
