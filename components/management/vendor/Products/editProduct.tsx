@@ -71,7 +71,6 @@ export const ButtonEdit: FC<Props> = ({
 					} else showToast('error', 'No se pudo actualizar el producto');
 				})
 				.catch((err) => {
-					console.log(err);
 					showToast('error', 'Error al actualizar el producto');
 				});
 		}

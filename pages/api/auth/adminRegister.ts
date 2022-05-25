@@ -46,7 +46,6 @@ const registerAdmin = async (
 		role: string;
 	};
 
-	console.log(req.body);
 
 	const vendor = await prisma.vendors.findUnique({
 		where: {
@@ -90,7 +89,6 @@ const registerAdmin = async (
 				});
 			})
 			.catch((err) => {
-				console.log(err);
 				return res.status(500).json({ message: 'Internal Server Error' });
 			});
 	}

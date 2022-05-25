@@ -41,7 +41,7 @@ export const AdminLayout: FC<Props> = ({
 					<div>
 						<Link
 							href={`/management/${
-								role === 'admin' ? 'admin' : 'vendors/home'
+								role === 'admin' ? 'admin/home' : 'vendors/home'
 							}`}
 							passHref
 						>

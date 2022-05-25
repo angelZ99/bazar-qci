@@ -101,7 +101,6 @@ export const SignupVendor: FC<Props> = ({ setToRegister }) => {
 				return false;
 			})
 			.catch((err) => {
-				console.log(err);
 				return false;
 			});
 	};

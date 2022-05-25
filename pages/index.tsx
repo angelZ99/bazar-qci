@@ -35,9 +35,6 @@ const Home: NextPage<Props> = ({
 	lastProducts,
 	moreCommented
 }) => {
-	console.log(moreCommented);
-	console.log(bestRated);
-
 	return (
 		<ShopLayout
 			title={'Inicio'}

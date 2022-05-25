@@ -14,7 +14,11 @@ import {
 	Images
 } from '@prisma/client';
 import { ShopLayout } from '../../../components/layouts';
-import { showToast, commentModal } from '../../../lib/notifications';
+import {
+	showToast,
+	commentModal,
+	reportModal
+} from '../../../lib/notifications';
 import { CommentList } from '../../../components/products/comments/CommentList';
 //@ts-ignore
 import ImageGallery from 'react-image-gallery';
@@ -84,6 +88,15 @@ const IndexProductsPage: NextPage<Props> = ({
 			router.reload();
 		} else {
 			showToast('error', 'Ya has comentado estre producto');
+		}
+	};
+
+	const handleReport = async () => {
+		const report = await reportModal(user?.userCode!, product.id, product.name);
+		if (report != null) {
+			showToast('success', 'Reporte agregado');
+		} else {
+			showToast('error', 'Ha ocurrido un error al crear el reporte');
 		}
 	};
 
@@ -211,7 +224,17 @@ const IndexProductsPage: NextPage<Props> = ({
 					<p>{product.description}</p>
 				</div>
 				{/***** Fav Product *****/}
-				<div className='flex justify-end mb-5'>
+				<div
+					className={`flex ${user ? 'justify-between' : 'justify-end'} mb-5`}
+				>
+					<button
+						className={`bg-red-600 hover:bg-red-700 px-3 py-1 text-white font-bold rounded-lg flex ${
+							!user && 'hidden'
+						}`}
+						onClick={handleReport}
+					>
+						Reportar
+					</button>
 					<button
 						className='bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-1 rounded-lg flex gap-3'
 						onClick={isFavorite ? removeFavorite : addFavorite}
