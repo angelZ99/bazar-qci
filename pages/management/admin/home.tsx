@@ -78,7 +78,10 @@ const Home: NextPage<Props> = ({ reports }) => {
 			<h3 className='text-2xl font-semibold'> Reportes: </h3>
 			<div className='flex flex-wrap gap-5 mb-5'>
 				{reports.map((report) => (
-					<div className='flex flex-col mb-5 border rounded-lg p-2 w-full md:w-1/3 lg:w-1/4'>
+					<div
+						key={report.id}
+						className='flex flex-col mb-5 border rounded-lg p-2 w-full md:w-1/3 lg:w-1/4'
+					>
 						<Image
 							src={report.product.images[0].url}
 							width={120}
